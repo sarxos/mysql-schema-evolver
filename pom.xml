@@ -10,7 +10,7 @@
 
 	<groupId>com.github.sarxos</groupId>
 	<artifactId>mysql-schema-evolver</artifactId>
-	<version>1.0</version>
+	<version>1.1</version>
 
 	<name>MySQL Schema Evolver</name>
 
