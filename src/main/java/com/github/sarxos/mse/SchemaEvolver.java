@@ -167,10 +167,6 @@ public class SchemaEvolver {
 			throw new FileNotFoundException(path);
 		}
 
-		if (!dbname.equals(dir.getName())) {
-			throw new IllegalArgumentException("Last path segment must be the same as database name");
-		}
-
 		ArrayList<String> versions = new ArrayList<>();
 		for (File file : dir.listFiles(EVF)) {
 			versions.add(file.getName());
