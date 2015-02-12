@@ -122,6 +122,9 @@ public class SchemaEvolver {
 	 */
 	private static final String DOWNGRADE = "downgrade";
 
+
+	private static final String ROUTINE_FILE = "routines.sql";
+
 	/**
 	 * MySQL database connection.
 	 */
@@ -170,6 +173,14 @@ public class SchemaEvolver {
 		ArrayList<String> versions = new ArrayList<>();
 		for (File file : dir.listFiles(EVF)) {
 			versions.add(file.getName());
+		}
+
+		LOG.info("Checking for routine file");
+		File file = new File(dir, ROUTINE_FILE);
+		if (file.canRead()) {
+			LOG.info("Routine file found, evaluating");
+			evaluate(file);
+			LOG.info("Routine file evaluated");
 		}
 
 		Collections.sort(versions, VC);
