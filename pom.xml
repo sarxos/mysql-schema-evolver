@@ -56,12 +56,14 @@
     <url>http://travis-ci.org/#!/sarxos/mysql-schema-evolver</url>
   </ciManagement>
 
+  <!--
   <distributionManagement>
     <repository>
       <id>sarxos-ftp-repo</id>
       <url>ftp://ftp.sarxos.pl/maven2</url>
     </repository>
   </distributionManagement>
+  -->
 
   <dependencies>
     <dependency>
