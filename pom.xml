@@ -1,174 +1,96 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>7</version>
-	</parent>
+  <parent>
+    <groupId>com.github.sarxos</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>2</version>
+  </parent>
 
-	<groupId>com.github.sarxos</groupId>
-	<artifactId>mysql-schema-evolver</artifactId>
-	<version>1.2</version>
+  <artifactId>mysql-schema-evolver</artifactId>
+  <version>1.3-SNAPSHOT</version>
 
-	<name>MySQL Schema Evolver</name>
+  <name>MySQL Schema Evolver</name>
+  <description>This is tool to perform MySQL schema evolutions</description>
 
-	<description>This is tool to perform MySQL schema evolutions</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+  <scm>
+    <connection>scm:git:git@github.com:sarxos/mysql-schema-evolve.git</connection>
+    <developerConnection>scm:git:git@github.com:sarxos/mysql-schema-evolve.git</developerConnection>
+    <url>git@github.com:sarxos/mysql-schema-evolve.git</url>
+  </scm>
 
-	<scm>
-		<connection>scm:git:git@github.com:sarxos/mysql-schema-evolve.git</connection>
-		<developerConnection>scm:git:git@github.com:sarxos/mysql-schema-evolve.git</developerConnection>
-		<url>git@github.com:sarxos/mysql-schema-evolve.git</url>
-	</scm>
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>https://raw.githubusercontent.com/sarxos/mysql-schema-evolver/master/LICENSE</url>
+    </license>
+  </licenses>
 
-	<licenses>
-		<license>
-			<name>MIT</name>
-			<url>https://raw.githubusercontent.com/sarxos/mysql-schema-evolver/master/LICENSE</url>
-		</license>
-	</licenses>
+  <developers>
+    <developer>
+      <id>sarxos</id>
+      <name>Bartosz Firyn</name>
+      <url>https://github.com/sarxos</url>
+      <timezone>+2</timezone>
+    </developer>
+  </developers>
 
-	<developers>
-		<developer>
-			<id>sarxos</id>
-			<name>Bartosz Firyn</name>
-			<email>bartoszfiryn@gmail.com</email>
-			<roles>
-				<role>Developer</role>
-			</roles>
-			<url>http://me.sarxos.pl/</url>
-			<organization>Bartosz Firyn (SarXos)</organization>
-			<organizationUrl>https://github.com/sarxos</organizationUrl>
-			<timezone>+2</timezone>
-		</developer>
-	</developers>
+  <organization>
+    <name>Bartosz Firyn (SarXos)</name>
+    <url>https://github.com/sarxos</url>
+  </organization>
 
-	<organization>
-		<name>Bartosz Firyn (SarXos)</name>
-		<url>https://github.com/sarxos</url>
-	</organization>
+  <issueManagement>
+    <system>GitHub Issues Manager</system>
+    <url>https://github.com/sarxos/mysql-schema-evolver/issues</url>
+  </issueManagement>
 
-	<issueManagement>
-		<system>GitHub Issues Manager</system>
-		<url>https://github.com/sarxos/mysql-schema-evolver/issues</url>
-	</issueManagement>
+  <ciManagement>
+    <system>Travis CI</system>
+    <url>http://travis-ci.org/#!/sarxos/mysql-schema-evolver</url>
+  </ciManagement>
 
-	<ciManagement>
-		<system>Travis CI</system>
-		<url>http://travis-ci.org/#!/sarxos/mysql-schema-evolver</url>
-	</ciManagement>
+  <distributionManagement>
+    <repository>
+      <id>sarxos-ftp-repo</id>
+      <url>ftp://ftp.sarxos.pl/maven2</url>
+    </repository>
+  </distributionManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>sarxos-ftp-repo</id>
-			<url>ftp://ftp.sarxos.pl/maven2</url>
-		</repository>
-	</distributionManagement>
+  <dependencies>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-collections4</artifactId>
+      <version>4.0</version>
+    </dependency>
+  </dependencies>
 
-	<profiles>
-		<profile>
-			<id>notest</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>2.9</version>
-						<configuration>
-							<skipTests>true</skipTests>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
-	<dependencies>
-		<!-- Logging -->
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-collections4</artifactId>
-			<version>4.0</version>
-		</dependency>
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>		
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>3.0</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.3</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<additionalparam>-Xdoclint:none</additionalparam>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ftp</artifactId>
-				<version>2.4</version>
-			</extension>
-		</extensions>
-	</build>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.7.5</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>

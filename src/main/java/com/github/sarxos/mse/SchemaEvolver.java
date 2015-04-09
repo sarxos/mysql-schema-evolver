@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -122,7 +125,6 @@ public class SchemaEvolver {
 	 */
 	private static final String DOWNGRADE = "downgrade";
 
-
 	private static final String ROUTINE_FILE = "routines.sql";
 
 	/**
@@ -153,6 +155,16 @@ public class SchemaEvolver {
 	}
 
 	/**
+	 * Read resource from classpath and return associated reader.
+	 *
+	 * @param resource the resource to read
+	 * @return {@link Reader} associated with resource {@link InputStream}
+	 */
+	private Reader read(String resource) {
+		return new InputStreamReader(getClass().getClassLoader().getResourceAsStream(resource));
+	}
+
+	/**
 	 * Evolve database schema.
 	 *
 	 * @param path the path to schema directories
@@ -175,7 +187,18 @@ public class SchemaEvolver {
 			versions.add(file.getName());
 		}
 
+		LOG.info("Preloading default routines");
+
+		evaluate(read("routines/AddColumn.sql"));
+		evaluate(read("routines/DropColumn.sql"));
+		evaluate(read("routines/DropFK.sql"));
+		evaluate(read("routines/DropIndex.sql"));
+		evaluate(read("routines/ModColumn.sql"));
+		evaluate(read("routines/SetCharacterSet.sql"));
+		evaluate(read("routines/SetCollate.sql"));
+
 		LOG.info("Checking for routine file");
+
 		File file = new File(dir, ROUTINE_FILE);
 		if (file.canRead()) {
 			LOG.info("Routine file found, evaluating");
@@ -258,7 +281,21 @@ public class SchemaEvolver {
 			return;
 		}
 
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+		try (Reader reader = new FileReader(file)) {
+			evaluate(reader);
+		}
+	}
+
+	/**
+	 * Evaluate SQL.
+	 *
+	 * @param reader the SQL instructions reader
+	 * @throws IOException when reader cannot read instructions
+	 * @throws SQLException when there is an SQL syntax in given file
+	 */
+	private final void evaluate(Reader reader) throws IOException, SQLException {
+
+		try (BufferedReader br = new BufferedReader(reader)) {
 
 			@SuppressWarnings("unchecked")
 			ImmutablePair<String, Object>[] params = new ImmutablePair[] {
