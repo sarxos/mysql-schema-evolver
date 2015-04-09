@@ -22,6 +22,7 @@
     <connection>scm:git:git@github.com:sarxos/mysql-schema-evolver.git</connection>
     <developerConnection>scm:git:git@github.com:sarxos/mysql-schema-evolver.git</developerConnection>
     <url>git@github.com:sarxos/mysql-schema-evolver.git</url>
+    <tag>HEAD</tag>
   </scm>
 
   <licenses>
