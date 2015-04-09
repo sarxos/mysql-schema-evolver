@@ -10,5 +10,5 @@ CREATE  TABLE IF NOT EXISTS `version` (
 ENGINE = InnoDB;
 
 START TRANSACTION;
-INSERT INTO `version` (id, version) VALUES (1, '00.00.00.00.00.00.001');
+INSERT INTO `version` (id, version) VALUES (1, '00.00.00.00.00.00.000');
 COMMIT;

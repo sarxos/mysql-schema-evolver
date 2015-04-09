@@ -177,16 +177,6 @@ public class SchemaEvolver {
 
 		// verify path points to a directory
 
-		File dir = new File(path);
-		if (!dir.isDirectory()) {
-			throw new FileNotFoundException(path);
-		}
-
-		ArrayList<String> versions = new ArrayList<>();
-		for (File file : dir.listFiles(EVF)) {
-			versions.add(file.getName());
-		}
-
 		LOG.info("Preloading default routines");
 
 		evaluate(read("routines/AddColumn.sql"));
@@ -199,11 +189,26 @@ public class SchemaEvolver {
 
 		LOG.debug("Checking for routines file");
 
-		File file = new File(dir, ROUTINE_FILE);
-		if (file.canRead()) {
+		File dir = new File(path);
+		if (!dir.isDirectory()) {
+			throw new FileNotFoundException(path);
+		}
+
+		File routines = new File(dir, ROUTINE_FILE);
+		if (routines.canRead()) {
 			LOG.info("Routines file found, evaluating");
-			evaluate(file);
+			evaluate(routines);
 			LOG.info("Routines file evaluated");
+		}
+
+		ArrayList<String> versions = new ArrayList<>();
+		for (File file : dir.listFiles(EVF)) {
+			versions.add(file.getName());
+		}
+
+		if (versions.isEmpty()) {
+			LOG.info("No upgrades to be executed");
+			return;
 		}
 
 		Collections.sort(versions, VC);
@@ -425,7 +430,8 @@ public class SchemaEvolver {
 				return createInitialVersion();
 			}
 		}
-		return "00.00.00.00.00.00.000";
+
+		throw new IllegalStateException("Unable to read version from database " + dbname);
 	}
 
 	/**
@@ -438,7 +444,7 @@ public class SchemaEvolver {
 	private String createInitialVersion() throws SQLException, IOException {
 		LOG.info("Creating initial schema in {}", dbname);
 		evaluate(read("sql/initial.sql"));
-		return "00.00.00.00.00.00.001";
+		return "00.00.00.00.00.00.000";
 	}
 
 	/**
