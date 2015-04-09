@@ -197,13 +197,13 @@ public class SchemaEvolver {
 		evaluate(read("routines/SetCharacterSet.sql"));
 		evaluate(read("routines/SetCollate.sql"));
 
-		LOG.info("Checking for routine file");
+		LOG.debug("Checking for routines file");
 
 		File file = new File(dir, ROUTINE_FILE);
 		if (file.canRead()) {
-			LOG.info("Routine file found, evaluating");
+			LOG.info("Routines file found, evaluating");
 			evaluate(file);
-			LOG.info("Routine file evaluated");
+			LOG.info("Routines file evaluated");
 		}
 
 		Collections.sort(versions, VC);
@@ -303,6 +303,11 @@ public class SchemaEvolver {
 				getParam("FOREIGN_KEY_CHECKS", 0),
 				getParam("SQL_MODE", "TRADITIONAL"),
 			};
+
+			// disable unique and foreign key check to speed up process
+
+			setParam("UNIQUE_CHECKS", 0);
+			setParam("FOREIGN_KEY_CHECKS", 0);
 
 			String s = null;
 			String delimiter = ";";
