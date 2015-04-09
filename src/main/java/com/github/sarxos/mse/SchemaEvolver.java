@@ -437,7 +437,7 @@ public class SchemaEvolver {
 	/**
 	 * Create initial schema.
 	 *
-	 * @return Always return 00.00.00.00.00.00.001
+	 * @return Always return 00.00.00.00.00.00.000
 	 * @throws SQLException
 	 * @throws IOException
 	 */
