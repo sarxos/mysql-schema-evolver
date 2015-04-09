@@ -411,8 +411,9 @@ public class SchemaEvolver {
 	 *
 	 * @return Currently installed database schema version
 	 * @throws SQLException
+	 * @throws IOException
 	 */
-	private final String getCurrentVersion() throws SQLException {
+	private final String getCurrentVersion() throws SQLException, IOException {
 		try (Statement stmt = connection.createStatement()) {
 			try (ResultSet rs = stmt.executeQuery("SELECT v.version FROM version v WHERE v.id = 1")) {
 				if (rs.next()) {
@@ -421,15 +422,29 @@ public class SchemaEvolver {
 			} catch (SQLException e) {
 				LOG.trace(e.getMessage(), e);
 				LOG.info("No version table detected in {} schema", dbname);
+				return createInitialVersion();
 			}
 		}
 		return "00.00.00.00.00.00.000";
 	}
 
 	/**
+	 * Create initial schema.
+	 *
+	 * @return Always return 00.00.00.00.00.00.001
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	private String createInitialVersion() throws SQLException, IOException {
+		LOG.info("Creating initial schema in {}", dbname);
+		evaluate(read("sql/initial.sql"));
+		return "00.00.00.00.00.00.001";
+	}
+
+	/**
 	 * Update version in database.
 	 *
-	 * @param version
+	 * @param version the new schema version to set
 	 * @throws SQLException
 	 */
 	private final void updateVersion(String version) throws SQLException {
